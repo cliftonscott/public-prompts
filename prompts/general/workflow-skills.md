@@ -1,18 +1,19 @@
 # Workflow skills (index)
 
 **Tool:** General (Cursor, Claude Code, Codex, ChatGPT, etc.)  
-**Use when:** You want a quick map of the inspect → change → review slash-style prompts and how they chain together.
+**Use when:** You want a quick map of the inspect → change → prove → review slash-style prompts and how they chain together.
 
-Trigger phrases: "workflow skills", "scout patch critique", links from other prompts in this repo.
+Trigger phrases: "workflow skills", "scout patch prove", links from other prompts in this repo.
 
 ---
 
-Six complementary prompts for everyday coding. Paste one file per task, or chain them.
+Seven complementary prompts for everyday coding. Paste one file per task, or chain them.
 
 | Prompt | Edits files? | Summary |
 |--------|----------------|---------|
 | [**scout**](scout.md) | No | Inspect before edit; smallest safe plan |
 | [**patch**](patch.md) | Yes | Minimal implementation after inspect |
+| [**prove**](prove.md) | Yes (fix loop) | Run checks; prove working or fix until proven |
 | [**critique**](critique.md) | No | Senior review with severities |
 | [**e2e**](e2e.md) | No* | Full path: UI → API → backend → data → tests |
 | [**brief**](brief.md) | No | Shortest useful answer |
@@ -22,7 +23,7 @@ Six complementary prompts for everyday coding. Paste one file per task, or chain
 
 ## Typical chains
 
-1. **Feature or bug (unknown scope):** scout → patch → critique (optional)
+1. **Feature or bug (unknown scope):** scout → patch → prove → critique (optional)
 2. **Cross-layer bug:** e2e → ooda or patch
 3. **Quick decision:** brief or [wwyd](wwyd.md)
 
@@ -44,6 +45,7 @@ Six complementary prompts for everyday coding. Paste one file per task, or chain
 | Prompt | Relationship |
 |--------|----------------|
 | [another-pass](another-pass.md) | Second pass on the *same* completed task |
+| [prove](prove.md) | Evidence loop after change; another-pass is broader quality, not proof-first |
 | [wwyd](wwyd.md) | Pick one recommendation (+ optional `--do`) |
 | [plan-review](plan-review.md) | Iterate a plan to READY_FOR_BUILD |
 | [ship-chat](ship-chat.md) | Commit, PR, CI, merge |

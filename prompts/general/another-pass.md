@@ -20,6 +20,7 @@ Re-execute the **same objective** the agent just finished (or was working toward
 
 - Not a blank-slate rewrite unless the first pass was wrong or the user asked to redo.
 - Not unrelated scope creep—stay tied to that objective.
+- Not a dedicated proof-or-fix loop with a formal verdict — use [prove](prove.md) when you want **PROVEN** / **NOT_PROVEN** evidence and bounded re-fixes.
 
 ## Checklist
 

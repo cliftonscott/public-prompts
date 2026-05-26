@@ -15,12 +15,13 @@ Each file is self-contained. Copy it into a chat, wire it as a slash command, or
 
 ### Workflow skills (inspect → change → review)
 
-Index: [**workflow-skills**](prompts/general/workflow-skills.md) · Typical chain: **scout → patch → critique**
+Index: [**workflow-skills**](prompts/general/workflow-skills.md) · Typical chain: **scout → patch → prove → critique**
 
 | Prompt | Summary |
 |--------|---------|
 | [**scout**](prompts/general/scout.md) | Inspect before edit; smallest safe plan (read-only) |
 | [**patch**](prompts/general/patch.md) | Minimal implementation change |
+| [**prove**](prompts/general/prove.md) | Run checks; prove working or fix until proven |
 | [**critique**](prompts/general/critique.md) | Senior review with severities (no edits unless asked) |
 | [**e2e**](prompts/general/e2e.md) | Trace UI → API → backend → data → tests |
 | [**brief**](prompts/general/brief.md) | Shortest useful answer |

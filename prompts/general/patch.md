@@ -74,5 +74,6 @@ When fixing a bug, end with a short **Problem / Root Cause / Solution / Next Ste
 ## Related
 
 - [scout](scout.md) — inspect first  
+- [prove](prove.md) — evidence the patch works  
 - [another-pass](another-pass.md) — second pass on the same objective  
 - [ship-chat](ship-chat.md) — open a PR when ready
