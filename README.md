@@ -12,6 +12,8 @@ Each file is self-contained. Copy it into a chat, wire it as a slash command, or
 | [**ship-chat**](prompts/general/ship-chat.md) | Ship session work to GitHub: commit scope, branch/worktree strategy, open a PR, and optionally wait on review, CI, and squash merge. |
 | [**plan-review**](prompts/general/plan-review.md) | Revise a `.plan.md` in a loop until **READY_FOR_BUILD**: working copy, optional second-opinion reviewer, unified-diff patches. |
 
+**Optional plan-review setup** (Codex CLI, MCP): [`docs/`](docs/README.md)
+
 All prompts: [`prompts/general/`](prompts/general/)
 
 ## How to use
@@ -29,7 +31,8 @@ Contributions welcome via pull request.
 - Add one prompt per file under `prompts/general/`
 - Use **kebab-case** filenames (`my-workflow.md`)
 - Include a **Use when:** line and optional trigger phrases at the top
-- Do not commit secrets, credentials, or private project data
+- Do not commit secrets, credentials, API keys, or private project data
+- Optional tooling guides live under [`docs/`](docs/) — configure auth in your IDE or environment only
 
 File template: [`prompts/README.md`](prompts/README.md)
 

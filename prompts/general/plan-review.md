@@ -11,7 +11,11 @@ Trigger phrases: `/plan-review`, "review this plan", "plan review loop", or atta
 |------|---------|-------------|
 | `<path>` | From chat context | Explicit path to the plan file |
 | `--max-iterations <n>` | `5` | Stop after N review rounds |
-| `--second-opinion` | off | Use a separate reviewer (second model, MCP, or read-only CLI) instead of reviewing in the same chat |
+| `--second-opinion` | off | Generic external reviewer (second chat, API, or custom tool) |
+| `--codex` | off | Read-only [Codex CLI](../../docs/setup-codex-cli.md) — see setup guide |
+| `--mcp` | off | [`review_plan` MCP tool](../../docs/setup-mcp-second-opinion.md) — see setup guide |
+
+Use **at most one** of `--second-opinion`, `--codex`, and `--mcp`. If none are set, use the default same-session path.
 
 ---
 
@@ -22,7 +26,11 @@ Review a plan markdown file, apply revisions, repeat until **`READY_FOR_BUILD`**
 | Path | Mechanism |
 |------|-----------|
 | **Default** | You review the plan in this session (read working copy, apply patch or manual edits). |
-| **`--second-opinion`** | A **read-only** external reviewer returns a structured verdict + optional unified diff; you apply changes to the working copy only. |
+| **`--codex`** | [Codex CLI](../../docs/setup-codex-cli.md) read-only review; you parse verdict and patch the working copy. |
+| **`--mcp`** | MCP **`review_plan`** tool per [setup guide](../../docs/setup-mcp-second-opinion.md). |
+| **`--second-opinion`** | Any other read-only reviewer that follows the output contract below. |
+
+Optional setup (no secrets in repo): [`docs/`](../../docs/README.md).
 
 ## Constraints
 
@@ -41,7 +49,7 @@ Use only a plan explicitly referenced in this chat:
 - attached / `@`-referenced `.plan.md`, or
 - explicitly named plan path.
 
-Strip flags (`--max-iterations`, `--second-opinion`) when detecting the plan path.
+Strip flags (`--max-iterations`, `--second-opinion`, `--codex`, `--mcp`) when detecting the plan path.
 
 If none: ask for a plan path or attachment and stop.
 
@@ -51,7 +59,9 @@ Resolve **`REPO_ROOT`**: `git -C "$(dirname "$PLAN_FILE")" rev-parse --show-topl
 
 - `ITERATION = 1`
 - `MAX_ITERATIONS = 5` (or `--max-iterations` override)
-- `USE_SECOND_OPINION = true` if `--second-opinion` in the user message
+- `USE_CODEX = true` if `--codex` in the user message
+- `USE_MCP = true` if `--mcp` in the user message
+- `USE_SECOND_OPINION = true` if `--second-opinion` (and not `--codex` / `--mcp`)
 - `SUMMARY_OF_PREVIOUS_CHANGES = ""`
 - `TEMP_DIR = /tmp/plan-review` (or a project temp dir)
 - `WORKING_PLAN = <TEMP_DIR>/<basename>.working.plan.md`
@@ -63,7 +73,9 @@ Create todo entries per iteration if your workflow uses them.
 
 1. Confirm `PLAN_FILE` exists.
 2. Create `TEMP_DIR` if missing.
-3. If **`USE_SECOND_OPINION`**: confirm your reviewer is available (read-only CLI, MCP tool, or API). If missing, report and stop or ask to fall back to default (same-session review).
+3. If **`USE_CODEX`**: `command -v codex`; follow [setup-codex-cli.md](../../docs/setup-codex-cli.md). If missing, stop or offer default path.
+4. If **`USE_MCP`**: confirm `review_plan` is callable in this session; follow [setup-mcp-second-opinion.md](../../docs/setup-mcp-second-opinion.md). If missing, stop or offer default path.
+5. If **`USE_SECOND_OPINION`**: confirm your generic reviewer is available. If missing, stop or fall back to default.
 
 ## Step 3 — Review loop
 
@@ -87,16 +99,13 @@ For `ITERATION > 1`, keep a compact `previousIterationSummary` (1–3 short line
 
 Apply the **Reviewer output contract** below to your own verdict.
 
-**`--second-opinion`:** Invoke your read-only reviewer with:
+**`--codex`:** Follow [setup-codex-cli.md](../../docs/setup-codex-cli.md). Write a session-specific prompt file with `WORKING_PLAN` path and the **Reviewer output contract**. Run `codex exec` with **read-only** sandbox. Parse output; correlate to this plan before applying patches. On failure, retry once or fall back to default.
 
-- Absolute path to `WORKING_PLAN`
-- `iterationNumber`, `maxIterations`, `previousIterationSummary`
-- Project instruction sources (paths, not pasted secrets)
-- The **Reviewer output contract** (send as instructions; reviewer must not edit files)
+**`--mcp`:** Call **`review_plan`** per [setup-mcp-second-opinion.md](../../docs/setup-mcp-second-opinion.md) with `planFilePath = WORKING_PLAN`, iteration fields, and optional `previousIterationSummary`. Apply returned patch or instructions to the working copy only. On MCP failure, stop or fall back to default.
 
-If your repo has a **read-only review script** (e.g. Codex relay), use it in read-only mode; correlate the run’s report to **this** plan path before trusting output. On timeout or ambiguous correlation, retry once or fall back to same-session review.
+**`--second-opinion`:** Invoke any other read-only reviewer with the same inputs as MCP (paths, iteration metadata, output contract). Do not paste secrets into prompts.
 
-Print: `Iteration N/MAX — reviewing <WORKING_PLAN>`
+Print: `Iteration N/MAX — reviewing <WORKING_PLAN> (<path>: default | codex | mcp | second-opinion)`
 
 ### 3.4 — Parse verdict
 
@@ -134,13 +143,13 @@ On reviewer timeout, spawn error, or parse failure:
 
 ## Step 4 — End summary
 
-Always print: iterations attempted, review path (same-session vs second-opinion), absolute **`PLAN_FILE`**.
+Always print: iterations attempted, review path (default | codex | mcp | second-opinion), absolute **`PLAN_FILE`**.
 
 ### When NOT READY_FOR_BUILD
 
 1. `cp <WORKING_PLAN> <PLAN_FILE>` when the working copy was updated.
 2. **Summary of updates:** what changed across iterations.
-3. **Re-run:** offer exact plan path; mention `--second-opinion` if the default path struggled.
+3. **Re-run:** offer exact plan path; mention `--codex` or `--mcp` setup docs if an advanced path failed.
 
 ---
 
@@ -181,6 +190,8 @@ Do not put `VERDICT:` anywhere except immediately after the `---` separator.
 ```text
 @plan-review @docs/plans/my-feature.plan.md
 @plan-review .cursor/plans/my_feature.plan.md --max-iterations 3
+@plan-review @docs/plans/my-feature.plan.md --codex
+@plan-review @docs/plans/my-feature.plan.md --mcp
 @plan-review @docs/plans/my-feature.plan.md --second-opinion
 ```
 
@@ -191,4 +202,5 @@ Do not put `VERDICT:` anywhere except immediately after the `---` separator.
 - Iteration 1 uses `cp` to `WORKING_PLAN`.
 - Revisions: `patch` first, manual only on failure.
 - Only the plan file is edited; no product code.
-- Second-opinion runs are correlated to the correct plan path before applying patches.
+- `--codex` / `--mcp` / `--second-opinion`: correlate reviewer output to this `WORKING_PLAN` before applying patches.
+- No API keys or tokens in committed prompt files.
