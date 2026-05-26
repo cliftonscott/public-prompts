@@ -13,6 +13,19 @@ Each file is self-contained. Copy it into a chat, wire it as a slash command, or
 | [**plan-review**](prompts/general/plan-review.md) | Revise a `.plan.md` in a loop until **READY_FOR_BUILD**: working copy, optional second-opinion reviewer, unified-diff patches. |
 | [**wwyd**](prompts/general/wwyd.md) | **What would you do?** — one clear recommendation and why; `--do` to apply it. |
 
+### Workflow skills (inspect → change → review)
+
+Index: [**workflow-skills**](prompts/general/workflow-skills.md) · Typical chain: **scout → patch → critique**
+
+| Prompt | Summary |
+|--------|---------|
+| [**scout**](prompts/general/scout.md) | Inspect before edit; smallest safe plan (read-only) |
+| [**patch**](prompts/general/patch.md) | Minimal implementation change |
+| [**critique**](prompts/general/critique.md) | Senior review with severities (no edits unless asked) |
+| [**e2e**](prompts/general/e2e.md) | Trace UI → API → backend → data → tests |
+| [**brief**](prompts/general/brief.md) | Shortest useful answer |
+| [**ooda**](prompts/general/ooda.md) | Observe → Orient → Decide → Act loops |
+
 **Optional plan-review setup** (Codex CLI, MCP): [`docs/`](docs/README.md)
 
 All prompts: [`prompts/general/`](prompts/general/)
