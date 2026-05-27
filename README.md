@@ -1,4 +1,4 @@
-# Public Prompts
+# AI Prompts
 
 Markdown prompts for AI coding agents — **Cursor**, **Claude Code**, **Codex**, **ChatGPT**, and similar tools.
 

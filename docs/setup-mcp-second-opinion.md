@@ -79,7 +79,7 @@ Minimal approach:
 4. Call your model with a system prompt that includes the reviewer output contract.
 5. Return structured JSON; optionally also write a markdown report locally (gitignored).
 
-Publish your server in its **own repository** if you want others to install it; link it from your fork of `public-prompts` README if desired.
+Publish your server in its **own repository** if you want others to install it; link it from your fork of [`ai-prompts`](https://github.com/cliftonscott/ai-prompts) README if desired.
 
 ## Safety checklist
 
