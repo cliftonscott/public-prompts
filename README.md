@@ -23,6 +23,7 @@ Index: [**workflow-skills**](prompts/general/workflow-skills.md) · Typical chai
 | [**patch**](prompts/general/patch.md) | Minimal implementation change |
 | [**prove**](prompts/general/prove.md) | Run checks; prove working or fix until proven |
 | [**critique**](prompts/general/critique.md) | Senior review with severities (no edits unless asked) |
+| [**devil-advocate**](prompts/general/devil-advocate.md) | Push back on ideas and assumptions (read-only) |
 | [**e2e**](prompts/general/e2e.md) | Trace UI → API → backend → data → tests |
 | [**brief**](prompts/general/brief.md) | Shortest useful answer |
 | [**ooda**](prompts/general/ooda.md) | Observe → Orient → Decide → Act loops |

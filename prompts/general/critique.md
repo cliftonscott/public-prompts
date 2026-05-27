@@ -16,6 +16,7 @@ Review **what the user points at** (diff, files, plan, UI description, architect
 ## When not to use
 
 - You want implementation → [patch](patch.md) (optionally "apply FINDING-001 only")
+- You want pushback on an **idea** before code exists → [devil-advocate](devil-advocate.md)
 - Whole-repo architecture survey → a dedicated audit prompt if your project has one
 - Plan iteration to READY_FOR_BUILD → [plan-review](plan-review.md)
 

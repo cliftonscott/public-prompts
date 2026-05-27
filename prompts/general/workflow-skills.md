@@ -7,14 +7,15 @@ Trigger phrases: "workflow skills", "scout patch prove", links from other prompt
 
 ---
 
-Seven complementary prompts for everyday coding. Paste one file per task, or chain them.
+Eight complementary prompts for everyday coding. Paste one file per task, or chain them.
 
 | Prompt | Edits files? | Summary |
 |--------|----------------|---------|
 | [**scout**](scout.md) | No | Inspect before edit; smallest safe plan |
 | [**patch**](patch.md) | Yes | Minimal implementation after inspect |
 | [**prove**](prove.md) | Yes (fix loop) | Run checks; prove working or fix until proven |
-| [**critique**](critique.md) | No | Senior review with severities |
+| [**critique**](critique.md) | No | Senior review with severities (artifacts) |
+| [**devil-advocate**](devil-advocate.md) | No | Challenge ideas and assumptions (read-only) |
 | [**e2e**](e2e.md) | No* | Full path: UI → API → backend → data → tests |
 | [**brief**](brief.md) | No | Shortest useful answer |
 | [**ooda**](ooda.md) | Per cycle | Observe → Orient → Decide → Act loops |
@@ -26,6 +27,7 @@ Seven complementary prompts for everyday coding. Paste one file per task, or cha
 1. **Feature or bug (unknown scope):** scout → patch → prove → critique (optional)
 2. **Cross-layer bug:** e2e → ooda or patch
 3. **Quick decision:** brief or [wwyd](wwyd.md)
+4. **Stress-test a proposal:** devil-advocate → wwyd or scout → patch
 
 ## Shared safety (all workflow prompts)
 
@@ -47,5 +49,6 @@ Seven complementary prompts for everyday coding. Paste one file per task, or cha
 | [another-pass](another-pass.md) | Second pass on the *same* completed task |
 | [prove](prove.md) | Evidence loop after change; another-pass is broader quality, not proof-first |
 | [wwyd](wwyd.md) | Pick one recommendation (+ optional `--do`) |
+| [devil-advocate](devil-advocate.md) | Challenges **ideas/plans**; [critique](critique.md) red-teams **artifacts** |
 | [plan-review](plan-review.md) | Iterate a plan to READY_FOR_BUILD |
 | [ship-chat](ship-chat.md) | Commit, PR, CI, merge |
